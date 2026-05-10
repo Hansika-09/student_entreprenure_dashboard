@@ -1,0 +1,23 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// For GitHub Pages project site, uncomment and set your repo name:
+// const base = '/student-entrepreneur-dashboard/'
+const base = '/'
+
+export default defineConfig({
+  base,
+  plugins: [react()],
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      }
+    }
+  },
+  build: {
+    outDir: 'dist'
+  }
+})
