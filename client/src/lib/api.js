@@ -1,7 +1,5 @@
-// API base URL: empty for local dev (uses Vite proxy), full URL for production
-export const API_BASE = import.meta.env.PROD
-  ? 'https://student-dashboard-api.onrender.com'
-  : '';
+// API base URL: empty = same origin (works for local dev via Vite proxy + Vercel fullstack)
+export const API_BASE = '';
 
 // Helper for fetch
 export async function apiGet(path) {

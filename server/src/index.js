@@ -10,7 +10,7 @@ import academicsRoutes from './routes/academics.js';
 dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
@@ -41,4 +41,7 @@ async function start() {
   });
 }
 
-start().catch(console.error);
+// Only start HTTP server if not running as a Vercel serverless function
+if (process.env.VERCEL !== '1') {
+  start().catch(console.error);
+}

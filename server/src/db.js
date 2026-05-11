@@ -9,10 +9,10 @@ let db = null;
 export async function initDatabase() {
   if (db) return db;
 
-  const dbPath = path.join(__dirname, '..', 'data.db');
+  const dbPath = process.env.VERCEL === '1' ? ':memory:' : path.join(__dirname, '..', 'data.db');
   db = new sqlite3.Database(dbPath, (err) => {
     if (err) console.error('SQLite open error:', err);
-    else console.log('Connected to SQLite database');
+    else console.log('Connected to SQLite database at', dbPath);
   });
 
   db.query = (sql, params = []) => {
