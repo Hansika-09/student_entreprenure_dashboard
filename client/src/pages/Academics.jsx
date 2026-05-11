@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, CheckCircle, Circle, BookOpen, TrendingUp } from 'lucide-react';
+import { apiGet, apiPost, apiPatch, apiDelete } from '../lib/api.js';
 
 export default function Academics() {
   const [courses, setCourses] = useState([]);
@@ -13,9 +14,9 @@ export default function Academics() {
 
   async function fetchData() {
     const [coursesRes, assignRes, gradesRes] = await Promise.all([
-      fetch('/api/academics/courses').then(r => r.json()),
-      fetch('/api/academics/assignments').then(r => r.json()),
-      fetch('/api/academics/grades').then(r => r.json()),
+      apiGet('/api/academics/courses'),
+      apiGet('/api/academics/assignments'),
+      apiGet('/api/academics/grades'),
     ]);
     setCourses(coursesRes);
     setAssignments(assignRes);
@@ -26,11 +27,7 @@ export default function Academics() {
 
   async function addCourse(e) {
     e.preventDefault();
-    await fetch('/api/academics/courses', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(courseForm),
-    });
+    await apiPost('/api/academics/courses', courseForm);
     setShowCourseForm(false);
     setCourseForm({ name: '', code: '', credits: 3, semester: '', color: '#6366f1' });
     fetchData();
@@ -38,28 +35,20 @@ export default function Academics() {
 
   async function addAssignment(e) {
     e.preventDefault();
-    await fetch('/api/academics/assignments', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(assignForm),
-    });
+    await apiPost('/api/academics/assignments', assignForm);
     setShowAssignForm(false);
     setAssignForm({ course_id: '', name: '', due_date: '', weight: 0, max_score: 100 });
     fetchData();
   }
 
   async function updateAssignment(id, score, status) {
-    await fetch(`/api/academics/assignments/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ score, status }),
-    });
+    await apiPatch(`/api/academics/assignments/${id}`, { score, status });
     fetchData();
   }
 
   async function deleteItem(type, id) {
     if (!confirm(`Delete this ${type}?`)) return;
-    await fetch(`/api/academics/${type}s/${id}`, { method: 'DELETE' });
+    await apiDelete(`/api/academics/${type}s/${id}`);
     fetchData();
   }
 

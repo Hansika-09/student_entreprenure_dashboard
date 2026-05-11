@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { apiGet, apiPost, apiDelete } from '../lib/api.js';
 
 export default function Revenue() {
   const [entries, setEntries] = useState([]);
@@ -11,8 +12,8 @@ export default function Revenue() {
 
   async function fetchData() {
     const [entriesRes, summaryRes] = await Promise.all([
-      fetch('/api/revenue/entries').then(r => r.json()),
-      fetch('/api/revenue/summary').then(r => r.json()),
+      apiGet('/api/revenue/entries'),
+      apiGet('/api/revenue/summary'),
     ]);
     setEntries(entriesRes);
     setSummary(summaryRes);
@@ -22,13 +23,9 @@ export default function Revenue() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await fetch('/api/revenue/entries', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...form,
-        amount: form.type === 'expense' ? -Math.abs(parseFloat(form.amount)) : Math.abs(parseFloat(form.amount))
-      }),
+    await apiPost('/api/revenue/entries', {
+      ...form,
+      amount: form.type === 'expense' ? -Math.abs(parseFloat(form.amount)) : Math.abs(parseFloat(form.amount))
     });
     setShowForm(false);
     setForm({ description: '', amount: '', type: 'income', category: '', entry_date: new Date().toISOString().split('T')[0], recurring: false });
@@ -37,7 +34,7 @@ export default function Revenue() {
 
   async function deleteEntry(id) {
     if (!confirm('Delete this entry?')) return;
-    await fetch(`/api/revenue/entries/${id}`, { method: 'DELETE' });
+    await apiDelete(`/api/revenue/entries/${id}`);
     fetchData();
   }
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, BookOpen, Target, Calendar } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
+import { apiGet } from '../lib/api.js';
 
 export default function Dashboard() {
   const [revenueSummary, setRevenueSummary] = useState({ income: 0, expenses: 0, net: 0 });
@@ -12,9 +13,9 @@ export default function Dashboard() {
     async function fetchData() {
       try {
         const [revRes, assignRes, gradesRes] = await Promise.all([
-          fetch('/api/revenue/summary').then(r => r.json()),
-          fetch('/api/academics/assignments').then(r => r.json()),
-          fetch('/api/academics/grades').then(r => r.json()),
+          apiGet('/api/revenue/summary'),
+          apiGet('/api/academics/assignments'),
+          apiGet('/api/academics/grades'),
         ]);
         setRevenueSummary(revRes);
         setAssignments(assignRes.slice(0, 5));
