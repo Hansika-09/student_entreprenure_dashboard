@@ -22,7 +22,7 @@ app.use('/api/academics', academicsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', db: process.env.DB_MODE || 'sqlite' });
+  res.json({ status: 'ok', db: 'sqlite' });
 });
 
 // Serve static files in production
@@ -37,7 +37,7 @@ async function start() {
   await initDatabase();
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Database mode: ${process.env.DB_MODE || 'sqlite'}`);
+    console.log('Database mode: sqlite');
   });
 }
 

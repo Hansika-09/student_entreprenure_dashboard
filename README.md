@@ -7,14 +7,14 @@ A full-stack dashboard web application for student entrepreneurs to manage start
 - **Revenue Management**: Track income, expenses, and view net revenue with visual analytics
 - **Academic Management**: Manage courses, assignments, and track grades/GPA
 - **Dark Mode UI**: Modern, sleek dark interface optimized for productivity
-- **Oracle DBMS Support**: Built for Oracle database with SQLite fallback for development
+- **SQLite Database**: Lightweight embedded SQL database (no setup required)
 - **Responsive Design**: Works across desktop and mobile devices
 
 ## Tech Stack
 
 - **Frontend**: React 18 + Vite + TailwindCSS + Recharts
 - **Backend**: Node.js + Express
-- **Database**: Oracle DBMS (production) / SQLite (development)
+- **Database**: SQLite (embedded, no setup required)
 
 ## Quick Start
 
@@ -24,22 +24,9 @@ A full-stack dashboard web application for student entrepreneurs to manage start
 npm run install:all
 ```
 
-### 2. Configure Database
+### 2. Run Development Server
 
-For development with SQLite (default):
-```bash
-cp server/.env.example server/.env
-```
-
-For Oracle DBMS, update `server/.env`:
-```env
-DB_MODE=oracle
-ORACLE_USER=your_username
-ORACLE_PASSWORD=your_password
-ORACLE_CONNECTION_STRING=localhost:1521/XEPDB1
-```
-
-### 3. Run Development Server
+No database setup needed — SQLite creates itself automatically.
 
 ```bash
 npm run dev
@@ -94,12 +81,9 @@ GitHub Pages only hosts static files. The Express API needs separate hosting:
 
 Once your backend is live, update the API base URL in `client/src/App.jsx` or use environment variables.
 
-### Deploy with Oracle DBMS in Production
+### Note on SQLite in Production
 
-1. Set up an Oracle Database (Oracle Cloud Free Tier, AWS RDS, or self-hosted)
-2. Set `DB_MODE=oracle` in your backend environment variables
-3. Provide `ORACLE_USER`, `ORACLE_PASSWORD`, and `ORACLE_CONNECTION_STRING`
-4. The app will automatically create tables on first startup
+SQLite works well for small to medium loads. The database file (`data.db`) is created automatically in the server folder. If you deploy to a platform with ephemeral filesystem (like Heroku or some serverless platforms), data may reset on each restart. For persistent hosting, use Render, Railway, or a VPS.
 
 ## Database Schema
 
