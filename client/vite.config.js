@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const base = '/student_entreprenure_dashboard/'
+const base = '/'
 
 export default defineConfig({
   base,
